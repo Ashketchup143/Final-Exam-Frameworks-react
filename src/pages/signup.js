@@ -71,6 +71,7 @@ const SignUp = () => {
                 >
                     Sign Up
                 </button>
+                <Link to="/"><h6 className="text-white mt-4 text-center underline">Back to SignIn</h6></Link>
                 {error && <p className="text-red-500">{error}</p>} {/* Display error message if there's an error */}
                 {success && (<Navigate to="/ecommerce" replace={true} />
 
