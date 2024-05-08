@@ -1,0 +1,140 @@
+import React, { useState } from 'react';
+
+const EcommercePage = () => {
+  const [books] = useState([
+    {
+      id: 1,
+      title: 'Book 1',
+      author: 'Author A',
+      category: 'Fiction',
+      price: 20.99,
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+    },
+    {
+      id: 2,
+      title: 'Book 2',
+      author: 'Author B',
+      category: 'Non-Fiction',
+      price: 15.99,
+      description: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+    },
+    {
+      id: 3,
+      title: 'Book 3',
+      author: 'Author C',
+      category: 'Science',
+      price: 25.99,
+      description: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+    },
+    {
+      id: 4,
+      title: 'Book 4',
+      author: 'Author D',
+      category: 'Fiction',
+      price: 18.49,
+      description: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'
+    },
+    {
+      id: 5,
+      title: 'Book 5',
+      author: 'Author E',
+      category: 'Non-Fiction',
+      price: 12.99,
+      description: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+    },
+    {
+      id: 6,
+      title: 'Book 6',
+      author: 'Author F',
+      category: 'Science',
+      price: 22.79,
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+    },
+    {
+      id: 7,
+      title: 'Book 7',
+      author: 'Author G',
+      category: 'Fantasy',
+      price: 19.99,
+      description: 'Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur.'
+    },
+    {
+      id: 8,
+      title: 'Book 8',
+      author: 'Author H',
+      category: 'Biography',
+      price: 17.49,
+      description: 'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.'
+    }
+  ]);
+
+  const [cart, setCart] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState('All');
+
+  const addToCart = (book) => {
+    const updatedCart = [...cart, book];
+    setCart(updatedCart);
+    setTotalPrice(totalPrice + book.price);
+  };
+
+  const removeFromCart = (bookId) => {
+    const updatedCart = cart.filter(book => book.id !== bookId);
+    const removedBook = cart.find(book => book.id === bookId);
+    setCart(updatedCart);
+    setTotalPrice(totalPrice - removedBook.price);
+  };
+
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+  };
+
+  const categories = ['All', 'Fiction', 'Non-Fiction', 'Science', 'Fantasy', 'Biography'];
+
+  const filteredBooks = selectedCategory === 'All' ? books : books.filter(book => book.category === selectedCategory);
+
+  return (
+    <div className="container mx-auto py-8">
+      <h1 className="text-3xl font-bold text-center mb-8">E-commerce Page</h1>
+      <div className="mb-4 flex justify-center">
+        {categories.map(category => (
+          <button key={category} className={`px-4 py-2 rounded-lg mr-4 ${selectedCategory === category ? 'bg-indigo-600 text-white' : 'bg-gray-200'}`} onClick={() => handleCategoryChange(category)}>{category}</button>
+        ))}
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredBooks.map(book => (
+          <div key={book.id} className="bg-white rounded-lg shadow-md p-6">
+            <h3 className="text-xl font-semibold mb-2">{book.title}</h3>
+            <p className="text-sm text-gray-600 mb-2">Author: {book.author}</p>
+            <p className="text-sm text-gray-600 mb-2">Category: {book.category}</p>
+            <p className="text-lg font-bold mb-4">${book.price}</p>
+            <p className="text-sm text-gray-700">{book.description}</p>
+            <button onClick={() => addToCart(book)} className="bg-indigo-600 text-white px-4 py-2 rounded-lg mt-4">Add to Cart</button>
+          </div>
+        ))}
+      </div>
+      <div className="mt-8">
+        <h2 className="text-xl font-bold mb-4">Shopping Cart</h2>
+        {cart.length === 0 ? (
+          <p>Your cart is empty</p>
+        ) : (
+          <div>
+            {cart.map(item => (
+              <div key={item.id} className="flex justify-between items-center border-b py-2">
+                <p>{item.title}</p>
+                <p>${item.price}</p>
+                <button onClick={() => removeFromCart(item.id)} className="text-red-500">Remove</button>
+              </div>
+            ))}
+            <div className="flex justify-between items-center mt-4">
+              <p className="font-bold">Total:</p>
+              <p>${totalPrice.toFixed(2)}</p>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default EcommercePage;
